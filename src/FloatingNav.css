@@ -1,0 +1,106 @@
+/* FloatingNav.css */
+
+.fab-nav-container {
+  pointer-events: auto;
+  overflow: visible;
+  position: fixed;
+  bottom: 36px;
+  right: 32px;
+  z-index: 100;
+}
+
+.fab-hover-area {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 220px; /* Cover the spread of side buttons */
+  height: 220px;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.fab-main-btn {
+  background: #f9f9f9;
+  border: 5px solid #6c1336;
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  box-shadow: 0 0 14px #0003;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  pointer-events: all;
+  transition: transform 0.3s ease;
+  z-index: 10;
+}
+
+.fab-icon-btn {
+  --arc-radius: 120px; /* Adjusted for arc length */
+  --angle-offset: calc(var(--i) * 20deg); /* Spread angle for arc */
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background: #e49c5a; /* Orange */
+  border-radius: 50%;
+  width: 58px;
+  height: 58px;
+  border: none;
+  box-shadow: 0 3px 10px #0003;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6c1336; /* Maroon */
+  font-size: 1.4rem;
+  cursor: pointer;
+  opacity: 0;
+  transform: translate(0, 0) scale(0.6);
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.3s ease;
+  transition-delay: 0ms;
+  pointer-events: all;
+  z-index: 11;
+}
+
+/* Open state with arc spread to the left */
+.fab-nav-container.open .fab-icon-btn {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateX(calc(-1 * var(--arc-radius) * cos(var(--angle-offset))))
+             translateY(calc(var(--arc-radius) * sin(var(--angle-offset))))
+             scale(1);
+  transition-delay: calc(var(--i) * 50ms); /* Staggered appearance */
+}
+
+/* When closing, reverse animation instantly */
+.fab-nav-container:not(.open) .fab-icon-btn {
+  transition-delay: 0ms !important;
+}
+
+/* Hover effects */
+.fab-icon-btn:hover {
+  background: #ffd597; /* Light gold hover */
+  transform: scale(1.2) !important;
+}
+
+.fab-nav-container.open .fab-hover-area {
+  pointer-events: auto;
+  background: transparent;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+  .fab-main-btn {
+    width: 55px;
+    height: 55px;
+    border-width: 4px;
+  }
+  .fab-icon-btn {
+    width: 44px;
+    height: 44px;
+    font-size: 1rem;
+    --arc-radius: 90px; /* Smaller radius for mobile */
+  }
+}

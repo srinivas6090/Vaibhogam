@@ -23,7 +23,12 @@ export default function Amenities() {
         {AMENITIES.map((amenity, idx) => (
           <div className="amenity-card" key={idx}>
             <div className="amenity-label">{amenity.label}</div>
-            <img src={amenity.img} alt={amenity.label} className="amenity-img" />
+            <div className="amenity-dark" />
+            <img
+              src={amenity.img}
+              alt={amenity.label}
+              className="amenity-img"
+            />
           </div>
         ))}
       </div>

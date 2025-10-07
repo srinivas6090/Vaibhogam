@@ -1,0 +1,145 @@
+body.modal-open {
+  overflow: hidden;
+  touch-action: none; /* disables touch scroll on mobile */
+}
+
+.bottom-sheet-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  pointer-events: auto;
+}
+
+.bottom-sheet {
+  background-color: #6b0b0c;
+  color: #e2a161;
+  width: 100%;
+  max-width: 480px;
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease-out;
+  position: relative;
+}
+
+.bottom-close-btn {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: #e2a161;
+  color: #6b0b0c;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.bottom-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: #e2a161;
+  margin-bottom: 15px;
+}
+
+.bottom-field {
+  margin-bottom: 15px;
+}
+
+.bottom-field label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.bottom-field input {
+  width: 100%;
+  padding: 10px 0px;
+  border-radius: 6px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+}
+
+.bottom-checkbox {
+  display: flex;
+  gap: 8px;
+  font-size: 12px;
+  color: #f3dcdc;
+  margin-bottom: 20px;
+  align-items: flex-start;
+}
+
+.bottom-submit {
+  width: 100%;
+  background-color: #e2a161;
+  color: #6b0b0c;
+  border: none;
+  padding: 12px 0;
+  border-radius: 25px;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.bottom-submit:disabled {
+  background-color: #e2a161;
+  cursor: not-allowed;
+}
+
+.otp-boxes {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.otp-boxes input {
+  width: 45px;
+  height: 45px;
+  border-radius: 12px;
+  border: none;
+  text-align: center;
+  font-size: 20px;
+  outline: none;
+}
+
+.mobile-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.country-code-select {
+  padding: 0.5em;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: white;
+}
+
+.mobile-input-wrapper input {
+  flex: 1;
+  padding: 0.5em;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+
+/* Slide up animation */
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

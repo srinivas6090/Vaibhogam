@@ -1,38 +1,83 @@
 import React, { useState, useEffect, useRef } from "react";
-import {
-  FaMapMarkerAlt,
-  FaProjectDiagram,
-  FaRegClipboard,
-  FaRupeeSign,
-  FaRegHandPointer,
-} from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import formIcon from "../assets/exam.svg";
+import layoutIcon from "../assets/layout.svg";
+import locationIcon from "../assets/location.svg";
+import rupeeIcon from "../assets/rupee.svg";
+import { FaRegHandPointer } from "react-icons/fa";
 
 const actions = [
-  { icon: <FaMapMarkerAlt />, label: "Location", to: "/location" },
-  { icon: <FaProjectDiagram />, label: "Land View", to: "/landview" },
-  { icon: <FaRegClipboard />, label: "Form", to: "/form" },
-  { icon: <FaRupeeSign />, label: "Payment", to: "/payment" },
+  {
+    icon: <img src={rupeeIcon} alt="Price" style={{ width: "20px", height: "20px" }} />,
+    label: "Price",
+    to: "payment",
+  },
+  {
+    icon: <img src={formIcon} alt="Form" style={{ width: "20px", height: "20px" }} />,
+    label: "Form",
+    to: "form",
+  },
+  {
+    icon: <img src={layoutIcon} alt="Layout" style={{ width: "20px", height: "20px" }} />,
+    label: "Layout",
+    to: "layout",
+  },
+  {
+    icon: <img src={locationIcon} alt="Location" style={{ width: "20px", height: "20px" }} />,
+    label: "Location",
+    to: "location",
+  },
 ];
 
-export default function FloatingNav() {
-  const [open, setOpen] = useState(false);
+export default function FloatingNav({ setCurrentPage, fabOpen, setFabOpen }) {
   const [isTouch, setIsTouch] = useState(false);
   const containerRef = useRef(null);
-  const navigate = useNavigate();
+  const scrollYRef = useRef(0);
 
-  // detect touch devices once
   useEffect(() => {
     const onFirstTouch = () => setIsTouch(true);
     window.addEventListener("touchstart", onFirstTouch, { once: true });
     return () => window.removeEventListener("touchstart", onFirstTouch);
   }, []);
 
-  // click / tap outside to close
+  // Lock body scroll when FAB is open
+  useEffect(() => {
+    if (fabOpen) {
+      // Save current scroll position
+      scrollYRef.current = window.scrollY || document.documentElement.scrollTop;
+
+      // Apply styles to lock scroll
+      document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollYRef.current}px`;
+      document.body.style.width = "100%";
+    } else {
+      // Restore scroll styles
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
+
+      // Scroll back to saved position
+      window.scrollTo(0, scrollYRef.current);
+    }
+
+    // Clean up in case component unmounts
+    return () => {
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
+    };
+  }, [fabOpen]);
+
   useEffect(() => {
     function handleDocPointer(e) {
       if (!containerRef.current) return;
-      if (!containerRef.current.contains(e.target)) setOpen(false);
+      if (!containerRef.current.contains(e.target)) {
+        if (typeof setFabOpen === "function") {
+          setFabOpen(false);
+        }
+      }
     }
     document.addEventListener("mousedown", handleDocPointer);
     document.addEventListener("touchstart", handleDocPointer);
@@ -40,25 +85,24 @@ export default function FloatingNav() {
       document.removeEventListener("mousedown", handleDocPointer);
       document.removeEventListener("touchstart", handleDocPointer);
     };
-  }, []);
+  }, [setFabOpen]);
 
   const handleNavClick = (to) => {
-    setOpen(false);
-    navigate(to);
+    if (typeof setFabOpen === "function") {
+      setFabOpen(false);
+    }
+    setCurrentPage(to);
   };
 
   return (
     <div
       ref={containerRef}
-      className={`fab-nav-container ${open ? "open" : ""}`}
-      // note: we rely on the invisible hover-area and icon handlers to keep open,
-      // so we do not need onMouseEnter here for desktop (icons also set it).
+      className={`fab-nav-container ${fabOpen ? "open" : ""}`}
     >
-      {/* invisible area that captures hover while menu is open (so moving to icons doesn't close) */}
       <div
         className="fab-hover-area"
-        onMouseEnter={() => !isTouch && setOpen(true)}
-        onMouseLeave={() => !isTouch && setOpen(false)}
+        onMouseEnter={() => !isTouch && setFabOpen(true)}
+        onMouseLeave={() => !isTouch && setFabOpen(false)}
         aria-hidden
       />
 
@@ -67,12 +111,12 @@ export default function FloatingNav() {
           key={label}
           className="fab-icon-btn"
           style={{ "--i": i }}
-          onMouseEnter={() => !isTouch && setOpen(true)}
-          onFocus={() => setOpen(true)}
-          onMouseLeave={() => !isTouch && setOpen(true)} // keep open while hovering icons
+          onMouseEnter={() => !isTouch && setFabOpen(true)}
+          onFocus={() => setFabOpen(true)}
+          onMouseLeave={() => !isTouch && setFabOpen(true)}
           onClick={() => handleNavClick(to)}
           title={label}
-          tabIndex={open ? 0 : -1} // only keyboard-focusable when open
+          tabIndex={fabOpen ? 0 : -1}
           aria-label={label}
         >
           {icon}
@@ -81,12 +125,14 @@ export default function FloatingNav() {
 
       <button
         className="fab-main-btn"
-        onMouseEnter={() => !isTouch && setOpen(true)}
-        onClick={() => setOpen((s) => !s)} // tap/click toggles on mobile / desktop
-        aria-expanded={open}
-        aria-label={open ? "Close menu" : "Open menu"}
+        onMouseEnter={() => !isTouch && setFabOpen(true)}
+        onClick={() => {
+          if (typeof setFabOpen === "function") setFabOpen((s) => !s);
+        }}
+        aria-expanded={fabOpen}
+        aria-label={fabOpen ? "Close menu" : "Open menu"}
       >
-        <FaRegHandPointer color="#6c1336" size={34} />
+        <FaRegHandPointer color="#6b0b0c" size={34} />
       </button>
     </div>
   );

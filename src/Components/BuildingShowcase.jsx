@@ -1,27 +1,35 @@
 import React from "react";
-import showcaseImg from "../assets/towers.png"; // Replace with your image path
-
+import videoBg from "../assets/700_F_296867325_LNMvDAonXPIDsThPiXwVENWBWvpKV3eh_ST.mp4"; // replace with actual video path
+import bottomLeft from "../assets/bottom-left-icon.svg";
+import topRight from "../assets/top-right-icon.svg";
 export default function BuildingShowcase() {
   return (
     <section className="building-showcase-bg">
       <div className="building-showcase-frame">
-        {/* Top-right SVG */}
-        <svg className="corner-svg top-right" viewBox="0 0 46 46" fill="none">
-          <path d="M40 6V23H23" stroke="#e6b87e" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M29 17L23 23L29 29" stroke="#e6b87e" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
+        {/* ✅ Top-right image instead of inline SVG */}
+        <img
+          src={topRight}
+          alt="Top Right Icon"
+          className="corner-svg top-right"
+          style={{ width: "60px", height: "60px" }}
+        />
 
-        {/* Bottom-left SVG */}
-        <svg className="corner-svg bottom-left" viewBox="0 0 46 46" fill="none">
-          <path d="M6 40V23H23" stroke="#e6b87e" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M17 29L23 23L17 17" stroke="#e6b87e" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
+        {/* ✅ Bottom-left image instead of inline SVG */}
+        <img
+          src={bottomLeft}
+          alt="Bottom Left Icon"
+          className="corner-svg bottom-left"
+          style={{ width: "60px", height: "60px" }}
+        />
 
         {/* Main image */}
-        <img
-          className="building-showcase-img"
-          src={showcaseImg}
-          alt="Building Showcase"
+        <video
+          className="building-showcase-video"
+          src={videoBg}
+          autoPlay
+          muted
+          loop
+          playsInline
         />
       </div>
     </section>
